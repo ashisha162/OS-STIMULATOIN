@@ -1,0 +1,312 @@
+#include<iostream> 
+using namespace std;
+int main()
+{
+    int select_algo;
+    cout<<"Select the algo for the following operation"<<endl;
+    cout<<"1.First-Fit\n";
+    cout<<"2.Worst-Fit\n";
+    cout<<"3.Best-Fit\n";
+    cin>>select_algo;
+    switch(select_algo)
+    {
+        case 1:
+    {
+Cout<<”FIRST-FIT”<<endl;
+cout<<"Enter the number of processes:";
+int n;
+cin>>n;
+
+// here declare the arrays to store block numbers, process sizes, and block sizes
+int block_no[n+1], process_size[n], block_size[n+1];
+
+// here use the for loop to enter the block sizes.
+for (int i=0;i<n+1;i++)
+{
+block_no[i]=i+1;
+cout<<"Enter the block size " << i+1 << ": ";
+cin>>block_size[i];
+}
+
+// here use the for loop to enter the process sizes.
+for (int i=0;i<n;i++)
+{
+cout<<"Enter the process size P" << i+1 << ": ";
+cin>>process_size[i];
+}
+
+// here to print the block numbers, process sizes, and block sizes entered.
+cout<<"Block no: ";
+for(int i=0;i<n+1; i++)
+{
+cout<<block_no[i]<<" ";
+}
+cout<<endl;
+cout<<"Process size: ";
+for(int i=0; i<n; i++)
+{
+cout<<process_size[i]<<" ";
+}
+cout<<endl;
+cout<<"Block size: ";
+for(int i=0; i<n+1;i++)
+{
+cout<<block_size[i]<<" ";
+}
+cout<<endl;
+
+// Print the header for the allocation table.
+cout<<"Process\t\tProcess Size\t\tBlock no\tFragmented"<<endl;
+
+// Initialize variables to keep track of fragmentation, allocated blocks, and unused blocks.
+int fragmentation = 0;
+int allocated_blocks = 0;
+int unused_blocks = 0;
+
+// Allocate the processes using the First Fit algorithm.
+for (int i=0; i<n; i++)
+{
+int temp=-1;
+for (int j=0; j<n+1; j++)
+{
+if (process_size[i]<=block_size[j])
+{
+temp=j;
+fragmentation += block_size[j] - process_size[i]; // add the fragmented space to total fragmentation
+allocated_blocks++; // increment the counter for allocated blocks
+block_size[j] -= process_size[i]; // update the block size
+cout<<"P"<<i+1<<"\t\t"<<process_size[i]<<"\t\t\t"<<temp+1<<"\t\t"<<block_size[j]<<endl;
+break;
+}
+}
+if(temp==-1)
+{
+cout<<"P"<<i+1<<"\t\t"<<process_size[i]<<"\t\t\tNot Allocated"<<endl;
+}
+}
+
+// Count the number of unused blocks.
+for (int i=0; i<n+1; i++)
+{
+if (block_size[i] > 0)
+{
+unused_blocks++;
+}
+}
+
+// Print out the total number of allocated blocks, the total fragmentation, and the number of unused blocks.
+cout<<"Number of allocated blocks: "<<allocated_blocks<<endl;
+cout<<"Total fragmented memory: "<<fragmentation<<endl;
+cout<<"Average fragmentation: "<<(double)fragmentation/allocated_blocks<<endl;
+cout<<"Number of unused blocks: "<<unused_blocks<<endl;    
+    
+  break;
+    }
+{
+   case 2:  
+{
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    cout << "WORST FIT" << endl;
+    cout << "Enter the number of processes: ";
+    int n;
+    cin >> n;
+    int block_no[n+1], process_size[n], block_size[n+1], fragmented_space[n];
+    for (int i=0; i<n+1; i++) 
+    {
+        block_no[i] = i+1;
+        cout << "Enter the block size " << i+1 << ": ";
+        cin >> block_size[i];
+    }
+    for (int i=0; i<n; i++)
+    {
+        cout << "Enter the process size P" << i+1 << ": ";
+        cin >> process_size[i];
+    }
+    cout << "Block no: "; 
+    for (int i=0; i<n; i++)
+    {
+        cout << block_no[i] << " ";
+    }
+    cout << endl;
+    cout << "Process size: ";
+    for (int i=0; i<n; i++) 
+    {
+        cout << process_size[i] << " ";
+    }
+    cout << endl;
+    cout << "Block size: ";
+    for (int i=0; i<n; i++) 
+    {
+        cout << block_size[i] << " ";
+    }
+    cout << endl;
+    cout << "Process\t\tProcess Size\t\tBlock no\t\tFragmented Space" << endl;
+
+    int total_fragmented_space = 0;
+    int num_allocated_processes = 0;
+
+    for (int i=0; i<n; i++) 
+    {
+        int max=0,temp=-1;
+        for(int j=0; j<n+1; j++)
+        {
+            if(block_size[j]>process_size[i])
+            {
+                int k=block_size[j]-process_size[i];
+                if(k>max)
+                {
+                    max=k;
+                    temp=j;
+                }
+            }
+        }
+        if(temp==-1)
+        {
+            cout<<"P"+to_string(i+1)+"\t\t"+to_string(process_size[i])+"\t\t\tNot Allocated"<<endl;
+            fragmented_space[i] = -1;
+        }
+        else
+        {
+            block_size[temp] -= process_size[i];
+            cout<<"P"+to_string(i+1)+"\t\t"+to_string(process_size[i])+"\t\t\t"+to_string(temp+1)+"\t\t\t"<<block_size[temp]<<endl;
+            fragmented_space[i] = block_size[temp];
+            num_allocated_processes++;
+            total_fragmented_space += fragmented_space[i];
+        }
+    }
+    cout << "Fragmented space: ";
+    for (int i=0; i<n; i++)
+    {
+        if (fragmented_space[i] == -1)
+        {
+            cout << "NA ";
+        }
+        else
+        {
+            cout << fragmented_space[i] << " ";
+        }
+    }
+    cout << endl;
+
+    int wasted_blocks = 0;
+    for (int i=0; i<n+1; i++)
+    {
+        if (block_size[i] > 0)
+        {
+            wasted_blocks++;
+        }
+    }
+    cout << "Number of wasted memory blocks: " << wasted_blocks << endl;
+
+    if (num_allocated_processes > 0)
+    {
+        double avg_fragmented_space = static_cast<double>(total_fragmented_space) / num_allocated_processes;
+        cout << "Average fragmented space: " << avg_fragmented_space << endl;
+    }
+    else
+    {
+        cout << "No"<<endl;
+    }
+}
+}
+    
+    
+    break;
+}
+  }
+
+    
+    case 3:
+    {
+        cout << "BEST FIT" << endl;
+cout << "Enter the number of processes: ";
+int n;
+cin >> n;
+int block_no[n+1], process_size[n], block_size[n+1];
+for (int i=0; i<n+1; i++)
+{
+    block_no[i] = i+1;
+    cout << "Enter the block size " << i+1 << ": ";
+    cin >> block_size[i];
+}
+for (int i=0; i<n; i++)
+{
+    cout << "Enter the process size P" << i+1 << ": ";
+    cin >> process_size[i];
+}
+cout << "Block no: "; 
+for (int i=0; i<n+1; i++)
+{
+    cout << block_no[i] << " ";
+}
+cout << endl;
+cout << "Process size: ";
+for (int i=0; i<n; i++)
+{
+    cout << process_size[i] << " ";
+}
+cout << endl;
+cout << "Block size: ";
+for (int i=0; i<n+1; i++)
+{
+    cout << block_size[i] << " ";
+}
+cout << endl;
+cout << "Process\t\tProcess Size\t\tBlock no\t\tFragmented Space" << endl;
+int total_fragmentation = 0;
+int num_allocated = 0;
+for (int i=0; i<n; i++) 
+{
+    int minimum = 9999999, temp;
+    for (int j=0; j<n+1; j++)
+    {
+        if (block_size[j] > process_size[i])
+        {
+            int k = block_size[j] - process_size[i];
+            if (abs(k) < minimum)
+            {
+                minimum = k;
+                temp = j;
+            }
+        }
+    }
+    if (minimum == 9999999)
+    {
+        cout << "P" << i+1 << "\t\t" << process_size[i] << "\t\t\tNot Allocated" << endl;
+    }
+    else
+    {
+        block_size[temp] -= process_size[i];
+        cout << "P" << i+1 << "\t\t" << process_size[i] << "\t\t\t" << temp+1 << "\t\t\t" << minimum << endl;
+        total_fragmentation += minimum;
+        num_allocated++;
+    }
+}
+cout<<"the total number of allocated process:"<<num_allocated<<endl;
+cout << "Average fragmentation: " << static_cast<double>(total_fragmentation)/num_allocated << endl;
+
+int unused_blocks = 0;
+for (int i=0; i<n+1; i++)
+{
+    if (block_size[i] > 0)
+    {
+        unused_blocks++;
+        total_fragmentation += block_size[i];
+    }
+}
+cout << "Number of unused memory blocks: " << unused_blocks << endl;
+cout << "Unused memory: " << total_fragmentation << endl;}
+    }
+}
+
+            
+        
+        
+
+    
+
+
