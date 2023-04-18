@@ -12,7 +12,7 @@ int main()
     {
         case 1:
     {
-Cout<<”FIRST-FIT”<<endl;
+cout<<"First-Fit" <<endl;
 cout<<"Enter the number of processes:";
 int n;
 cin>>n;
@@ -105,11 +105,7 @@ cout<<"Number of unused blocks: "<<unused_blocks<<endl;
 {
    case 2:  
 {
-#include <iostream>
-#include <string>
-using namespace std;
 
-int main() {
     cout << "WORST FIT" << endl;
     cout << "Enter the number of processes: ";
     int n;
@@ -211,13 +207,13 @@ int main() {
     {
         cout << "No"<<endl;
     }
-}
+
 }
     
     
     break;
 }
-  }
+  
 
     
     case 3:
@@ -308,5 +304,3 @@ cout << "Unused memory: " << total_fragmentation << endl;}
         
 
     
-
-
